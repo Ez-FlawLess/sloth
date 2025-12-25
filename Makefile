@@ -1,4 +1,4 @@
-.PHONY: test-miri run-miri test build run
+.PHONY: test-miri run-miri test build run bench
 
 # Run tests with miri (requires nightly)
 # Suppress unused warnings during build
@@ -20,3 +20,7 @@ build:
 # Regular run (uses stable toolchain)
 run:
 	cargo run
+
+# Run benchmarks with criterion
+bench:
+	cargo bench

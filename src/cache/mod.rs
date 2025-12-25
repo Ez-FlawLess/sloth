@@ -20,11 +20,19 @@ struct Item<T> {
     data: UnsafeCell<Option<T>>,
 }
 
+// Safety: Cache is designed for concurrent access
+// - UnsafeCell is only accessed through atomic guards (count for reads, writing for writes)
+// - Reads increment/decrement count atomically around the UnsafeCell access
+// - Writes hold the writing lock and check count is zero before accessing UnsafeCell
+unsafe impl<T: Clone, const LEN: usize> Sync for Cache<T, LEN> {}
+
 impl<T: Clone, const LEN: usize> Cache<T, LEN> {
-    const _CHECK_LEN_IS_POWER_OF_TWO: () = assert!(LEN.is_power_of_two() == true);
+    const CHECK_LEN_IS_POWER_OF_TWO: () = assert!(LEN.is_power_of_two() == true);
     const LEN_MASK: usize = LEN - 1;
 
     pub fn new(data: T) -> Self {
+        let _ = Self::CHECK_LEN_IS_POWER_OF_TWO;
+
         let mut items = array::from_fn(|_| Item {
             count: CachePadded::new(AtomicUsize::new(0)),
             data: UnsafeCell::new(None),
