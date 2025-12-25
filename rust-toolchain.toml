@@ -1,0 +1,7 @@
+[toolchain]
+channel = "stable"
+
+# Note: Miri tests require nightly toolchain
+# Run with: cargo +nightly miri test
+# Or use the aliases: cargo test-miri, cargo run-miri
+# These aliases automatically use nightly with miri

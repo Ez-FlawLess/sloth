@@ -1,0 +1,7 @@
+# Cargo configuration file
+#
+# Note: Miri aliases cannot be configured here because cargo aliases
+# do not support the +toolchain syntax.
+#
+# To run miri tests, use: cargo +nightly miri test
+# To run miri binary, use: cargo +nightly miri run
